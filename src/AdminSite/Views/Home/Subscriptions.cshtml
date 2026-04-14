@@ -254,15 +254,12 @@
             contentType: "application/json; charset=utf-8",
             datatype: "json",
             beforeSend: function() {
-                console.log('beforeSend');
                 swal({ title:"Inprogress!", text: "Fetching subscriptions from SaaS fulfilment api.", icon: "info",  button: false, closeOnClickOutside: false });
             },
             success : function(data) {
-                console.log('complete');
                 swal({ title: "Complete", text: "Refresh the page to see any new fetched SaaS subscriptions.", icon: "info", button: true });
             },
             error: function (data) {
-                console.log('error');
                 swal({ title: "Error", text:"Something went wrong. Check logger logs.", icon: "error" });
             }
         });

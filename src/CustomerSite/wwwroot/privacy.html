@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — dForts Copilot Readiness Monitor</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #333;
+      background: #f9f9f9;
+    }
+    header {
+      background: linear-gradient(135deg, #0078D4, #106EBE);
+      color: white;
+      padding: 32px 0;
+    }
+    header .inner {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+    header p  { font-size: 13px; opacity: 0.85; }
+    main {
+      max-width: 820px;
+      margin: 40px auto;
+      padding: 0 32px 64px;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e1e1e1;
+      padding: 40px 48px;
+    }
+    h2 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #0078D4;
+      margin: 32px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e8f0fe;
+    }
+    h2:first-child { margin-top: 0; }
+    p  { margin-bottom: 12px; }
+    ul { margin: 8px 0 12px 24px; }
+    li { margin-bottom: 6px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 20px;
+      font-size: 14px;
+    }
+    th {
+      text-align: left;
+      background: #f0f6ff;
+      color: #0078D4;
+      padding: 10px 14px;
+      font-weight: 600;
+    }
+    td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    .badge {
+      display: inline-block;
+      background: #e8f0fe;
+      color: #0078D4;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      margin-top: 24px;
+    }
+    a { color: #0078D4; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <h1>&#128274; dForts Copilot Readiness Monitor</h1>
+    <p>Privacy Policy &nbsp;·&nbsp; Last updated: April 2025</p>
+  </div>
+</header>
+
+<main>
+<div class="card">
+
+  <h2>1. Who We Are</h2>
+  <p>
+    This Privacy Policy applies to the <strong>dForts Copilot Readiness Monitor</strong> application
+    (the &ldquo;Product&rdquo;), published by <strong>dForts</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;)
+    on Microsoft AppSource and distributed as a SharePoint Framework (SPFx) solution.
+  </p>
+  <p>Contact: <a href="mailto:privacy@dforts.com">privacy@dforts.com</a> &nbsp;|&nbsp; <a href="https://dforts.com" target="_blank">dforts.com</a></p>
+
+  <h2>2. Scope</h2>
+  <p>
+    This policy describes how we collect, use, and protect information when your organization installs
+    and uses the dForts Copilot Readiness Monitor. It applies to all end users within the subscribing
+    Microsoft 365 tenant.
+  </p>
+  <p>
+    This Product operates primarily <strong>within your own Microsoft 365 tenant</strong>. The only
+    outbound data transfer to dForts infrastructure is the license validation request described in
+    Section 4.
+  </p>
+
+  <h2>3. Data Processed Within Your Tenant</h2>
+  <p>
+    The following data is accessed at runtime to perform the oversharing analysis. It is
+    <strong>never transmitted to dForts servers</strong> and is processed exclusively within your
+    Microsoft 365 environment:
+  </p>
+  <table>
+    <tr>
+      <th>Data type</th>
+      <th>Purpose</th>
+      <th>Storage</th>
+    </tr>
+    <tr>
+      <td>SharePoint site URLs, names, and IDs</td>
+      <td>Enumerate sites for tenant-wide report (admin web part)</td>
+      <td>In-memory only, not persisted</td>
+    </tr>
+    <tr>
+      <td>File and folder names, URLs, and item IDs</td>
+      <td>Identify items with risky permission configurations</td>
+      <td>In-memory only, not persisted</td>
+    </tr>
+    <tr>
+      <td>SharePoint permission assignments (role assignments, sharing links)</td>
+      <td>Detect oversharing: Everyone, anonymous, external, and unique permissions</td>
+      <td>In-memory only, not persisted</td>
+    </tr>
+    <tr>
+      <td>Microsoft 365 group membership counts</td>
+      <td>Estimate exposure impact when a group has unique permissions</td>
+      <td>In-memory only, not persisted</td>
+    </tr>
+    <tr>
+      <td>Site owner display names and email addresses</td>
+      <td>Populate the &ldquo;Notify Owners&rdquo; feature in the admin report</td>
+      <td>In-memory only, not persisted</td>
+    </tr>
+    <tr>
+      <td>Scan results summary (score, risky item list, remediation log)</td>
+      <td>Cache results for performance; display history and audit trail to site owners</td>
+      <td>Stored in a hidden SharePoint list within <strong>your own site</strong></td>
+    </tr>
+    <tr>
+      <td>Acknowledged items</td>
+      <td>Track permissions intentionally accepted by the site owner</td>
+      <td>Stored in a hidden SharePoint list within <strong>your own site</strong></td>
+    </tr>
+  </table>
+  <p>
+    All SharePoint list data is stored inside your own tenant and is subject to your organization&rsquo;s
+    own data governance and retention policies.
+  </p>
+
+  <h2>4. Data Transmitted to dForts</h2>
+  <p>
+    The only information sent to dForts infrastructure is:
+  </p>
+  <ul>
+    <li>
+      <strong>Your Microsoft 365 Tenant ID (GUID)</strong> — transmitted via HTTPS to
+      <code>dfortsspcp01.portal.azurewebsites.net</code> at web part load time to verify whether
+      your organization holds an active license. This identifier is a non-personal, organization-level
+      identifier assigned by Microsoft.
+    </li>
+  </ul>
+  <p>
+    This request returns only the license plan tier (<em>standard</em>, <em>premium</em>, or <em>none</em>)
+    and the subscription expiry date. No personal data, file contents, or SharePoint metadata are
+    transmitted.
+  </p>
+  <p>
+    The result is cached in the user&rsquo;s browser session storage for up to one hour to avoid
+    repeated API calls.
+  </p>
+
+  <h2>5. Microsoft Graph Permissions</h2>
+  <p>
+    The Product requests the following Microsoft Graph delegated permissions, which must be approved
+    by a Global Administrator or SharePoint Administrator at installation time:
+  </p>
+  <table>
+    <tr>
+      <th>Permission</th>
+      <th>Justification</th>
+    </tr>
+    <tr>
+      <td><span class="badge">Sites.Read.All</span></td>
+      <td>Enumerate SharePoint sites for the tenant-wide report</td>
+    </tr>
+    <tr>
+      <td><span class="badge">Files.Read.All</span></td>
+      <td>Read file and folder metadata to detect permission anomalies</td>
+    </tr>
+    <tr>
+      <td><span class="badge">GroupMember.Read.All</span></td>
+      <td>Count transitive members of Microsoft 365 groups with unique permissions</td>
+    </tr>
+    <tr>
+      <td><span class="badge">Group.Read.All</span></td>
+      <td>Read group owners to populate the &ldquo;Notify Owners&rdquo; feature</td>
+    </tr>
+    <tr>
+      <td><span class="badge">User.Read.All</span></td>
+      <td>Resolve user identities and email addresses for owner notifications</td>
+    </tr>
+    <tr>
+      <td><span class="badge">Mail.Send</span></td>
+      <td>Send notification emails to site owners on behalf of the IT administrator</td>
+    </tr>
+  </table>
+  <p>
+    All permissions are exercised under the delegated identity of the signed-in user.
+    The Product does not use application-level (app-only) permissions.
+  </p>
+
+  <h2>6. Data Retention</h2>
+  <ul>
+    <li><strong>Browser session storage</strong> (license cache): cleared when the browser tab is closed.</li>
+    <li><strong>SharePoint hidden lists</strong> (scan cache, acknowledgements, remediation log): retained indefinitely until the site owner or administrator deletes them. These lists reside in your own tenant.</li>
+    <li><strong>dForts license database</strong>: stores Tenant ID, active plan, and subscription dates for the duration of the subscription plus any applicable legal retention period. Deleted upon written request after subscription cancellation.</li>
+  </ul>
+
+  <h2>7. Legal Basis for Processing (GDPR)</h2>
+  <p>
+    For organizations in the European Economic Area, the legal basis for processing is:
+  </p>
+  <ul>
+    <li><strong>Contract performance</strong> (Article 6(1)(b) GDPR) — processing necessary to deliver the licensed service.</li>
+    <li><strong>Legitimate interests</strong> (Article 6(1)(f) GDPR) — license validation to protect against unauthorized use.</li>
+  </ul>
+
+  <h2>8. Data Subject Rights</h2>
+  <p>
+    Depending on your jurisdiction, individuals may have the right to access, correct, or erase
+    personal data we hold. Since almost all data is processed within your own tenant, the primary
+    point of control is your organization&rsquo;s Microsoft 365 administrators.
+  </p>
+  <p>
+    For data held in dForts infrastructure (Tenant ID, subscription details), contact us at
+    <a href="mailto:privacy@dforts.com">privacy@dforts.com</a>. We will respond within 30 days.
+  </p>
+
+  <h2>9. Security</h2>
+  <p>
+    All communication between the Product and dForts infrastructure uses HTTPS (TLS 1.2 or higher).
+    The license API endpoint does not require authentication beyond the Tenant ID and does not
+    expose sensitive data in its response. SharePoint data never leaves your tenant.
+  </p>
+
+  <h2>10. Sub-processors and Third Parties</h2>
+  <table>
+    <tr>
+      <th>Sub-processor</th>
+      <th>Role</th>
+      <th>Location</th>
+    </tr>
+    <tr>
+      <td>Microsoft Azure (App Service, Azure SQL)</td>
+      <td>Hosting for the license validation API and subscription database</td>
+      <td>European Union (West Europe region)</td>
+    </tr>
+    <tr>
+      <td>Microsoft 365 / SharePoint</td>
+      <td>Execution environment and data storage within your tenant</td>
+      <td>Your organization&rsquo;s chosen Microsoft region</td>
+    </tr>
+  </table>
+
+  <h2>11. Changes to This Policy</h2>
+  <p>
+    We may update this policy periodically. The &ldquo;Last updated&rdquo; date at the top will
+    reflect any changes. Continued use of the Product after changes are posted constitutes
+    acceptance of the revised policy.
+  </p>
+
+  <h2>12. Contact</h2>
+  <p>
+    For privacy-related inquiries: <a href="mailto:privacy@dforts.com">privacy@dforts.com</a><br/>
+    Website: <a href="https://dforts.com" target="_blank">https://dforts.com</a>
+  </p>
+
+</div>
+</main>
+
+<footer>
+  &copy; 2025 dForts &nbsp;·&nbsp;
+  <a href="/terms.html">Terms of Use</a> &nbsp;·&nbsp;
+  <a href="https://dforts.com">dforts.com</a>
+</footer>
+
+</body>
+</html>

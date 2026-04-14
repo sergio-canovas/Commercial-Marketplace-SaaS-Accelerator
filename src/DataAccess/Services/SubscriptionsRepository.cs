@@ -172,6 +172,26 @@ public class SubscriptionsRepository : ISubscriptionsRepository
     }
 
     /// <summary>
+    /// Gets the subscriptions associated to a purchaser tenant.
+    /// </summary>
+    /// <param name="tenantId">The purchaser tenant identifier.</param>
+    /// <returns>Subscriptions for the tenant.</returns>
+    public IEnumerable<Subscriptions> GetSubscriptionsByPurchaserTenantId(Guid tenantId)
+    {
+        if (tenantId == Guid.Empty)
+        {
+            return Enumerable.Empty<Subscriptions>();
+        }
+
+        return this.context.Subscriptions
+            .Include(s => s.User)
+            .Where(s => s.PurchaserTenantId == tenantId)
+            .OrderByDescending(s => s.IsActive ?? false)
+            .ThenByDescending(s => s.ModifyDate ?? s.CreateDate)
+            .ToList();
+    }
+
+    /// <summary>
     /// Gets the subscriptions by ScheduleId.
     /// </summary>
     /// <param name="subscriptionId">The subscription identifier.</param>

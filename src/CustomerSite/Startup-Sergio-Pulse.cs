@@ -129,21 +129,6 @@ public class Startup
 
         InitializeRepositoryServices(services);
 
-                services.AddCors(options =>
-        {
-            options.AddPolicy("SharePointWebParts", policy =>
-            {
-                policy
-                    .SetIsOriginAllowed(origin =>
-                    {
-                        var uri = new Uri(origin);
-                        return uri.Host.EndsWith(".sharepoint.com", StringComparison.OrdinalIgnoreCase);
-                    })
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-        });
-
         services.AddMvc(option => {
             option.EnableEndpointRouting = false;
             option.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -171,7 +156,6 @@ public class Startup
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseCookiePolicy();
-        app.UseCors("SharePointWebParts");
         app.UseAuthentication();
         app.UseMvc(routes =>
         {
@@ -196,10 +180,10 @@ public class Startup
         services.AddScoped<IOfferAttributesRepository, OfferAttributesRepository>();
         services.AddScoped<IPlanEventsMappingRepository, PlanEventsMappingRepository>();
         services.AddScoped<IEventsRepository, EventsRepository>();
+        services.AddScoped<ITenantTrialRepository, TenantTrialRepository>();
         services.AddScoped<IEmailService, SMTPEmailService>();
         services.AddScoped<ITenantEntitlementService, TenantEntitlementService>();
         services.AddScoped<SaaSClientLogger<HomeController>>();
         services.AddScoped<IWebNotificationService, WebNotificationService>();
     }
 }
-

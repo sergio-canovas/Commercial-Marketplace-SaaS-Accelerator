@@ -35,6 +35,7 @@ public partial class SaasKitContext : DbContext
     public virtual DbSet<SubscriptionEmailOutput> SubscriptionEmailOutput { get; set; }
     public virtual DbSet<SubscriptionParametersOutput> SubscriptionParametersOutput { get; set; }
     public virtual DbSet<Subscriptions> Subscriptions { get; set; }
+    public virtual DbSet<TenantTrial> TenantTrials { get; set; }
     public virtual DbSet<Users> Users { get; set; }
     public virtual DbSet<ValueTypes> ValueTypes { get; set; }
     public virtual DbSet<WebJobSubscriptionStatus> WebJobSubscriptionStatus { get; set; }

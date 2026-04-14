@@ -30,6 +30,13 @@ public interface ISubscriptionsRepository : IDisposable, IBaseRepository<Subscri
     Subscriptions GetById(Guid subscriptionId, bool isIncludeDeactvated = false);
 
     /// <summary>
+    /// Gets the subscriptions associated to a purchaser tenant.
+    /// </summary>
+    /// <param name="tenantId">The purchaser tenant identifier.</param>
+    /// <returns>Subscriptions for the tenant.</returns>
+    IEnumerable<Subscriptions> GetSubscriptionsByPurchaserTenantId(Guid tenantId);
+
+    /// <summary>
     /// Updates the status for subscription.
     /// </summary>
     /// <param name="subscriptionId">The subscription identifier.</param>
