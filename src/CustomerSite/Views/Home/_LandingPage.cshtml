@@ -208,25 +208,71 @@
 }
 else
 {
-    <div class="pt-5">
-        <div class="card p-3 ">
-            <div class="text-center">
-                <h1 class="display-4">Welcome</h1>
-            </div>
-            <div class="text-left">
-                <p>
-                    Get started with integrating your <b> Software as a Service (SaaS) </b> solution with the <b> SaaS fulfillment APIs version 2 in Microsoft commercial marketplace. </b>
+    <div class="container mt-5">
+        <div class="row jumbotron cm-panel-default shadow-sm border-0 rounded-lg p-5">
+            <div class="col-md-8 text-left">
+                <h1 class="display-4 font-weight-bold" style="color: #004578;">Welcome to dForts!</h1>
+                <p class="lead mt-3">
+                    You are one step away from ensuring data governance in your organization before deploying Microsoft 365 Copilot.
                 </p>
-                <p><a href="https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2" target="_blank">Click here </a><span>for the API documentation.</span> </p>
-            </div>
-            <div>
-                <b>To purchase this SaaS offer:</b>
-                <ul>
-                    <li>Search for resources of type <b> Software as a Service (SaaS) </b></li>
-                    <li>Search for your offer</li>
-                    <li>Click <b> Create</b> to subscribe to the offer</li>
-                    <li>Click <b>Configure Account </b> after the subscription created</li>
+                <hr class="my-4">
+                
+                <h4 class="mb-3">How to get started:</h4>
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fa fa-check-circle text-success mr-2"></i> 
+                        <strong>1. Purchase or Trial:</strong> If you haven't yet, subscribe to the "Copilot Readiness Monitor" in the Microsoft Commercial Marketplace.
+                    </li>
+                    <li class="mb-3">
+                        <i class="fa fa-check-circle text-success mr-2"></i> 
+                        <strong>2. Tenant Deployment:</strong> Go to the Microsoft 365 Admin Center > Integrated Apps and ensure the solution is deployed.
+                    </li>
+                    <li class="mb-3">
+                        <i class="fa fa-check-circle text-success mr-2"></i> 
+                        <strong>3. Add to SharePoint:</strong> Navigate to any site you wish to audit and add the "dForts: Copilot Readiness Monitor" Web Part to a modern page.
+                    </li>
+                    <li class="mb-3">
+                        <i class="fa fa-check-circle text-success mr-2"></i> 
+                        <strong>4. First Scan:</strong> As a Site Owner, run the deep scan to identify oversharing risks immediately.
+                    </li>
                 </ul>
+
+                <div class="mt-4">
+                    <a class="btn cm-button-default px-4 py-2 text-white" style="text-decoration:none;" href="https://github.com/dForts/CopilotReadinessDocs" target="_blank">
+                        <i class="fa fa-book mr-2"></i> View IT Administrator Guide
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-center d-none d-md-block">
+                <div class="p-4 bg-light rounded-circle shadow-sm mx-auto" style="width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; overflow:hidden;">
+                     <img src="~/logo.jpeg" alt="dForts Logo" style="max-width: 100%;" />
+                </div>
+                <div class="mt-4">
+                    <div class="text-muted small">Secure your Copilot deployment with dForts.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Support Section -->
+        <div class="row mt-5 text-left">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-3">
+                    <h5><i class="fa fa-shield text-primary mr-2"></i> Total Privacy</h5>
+                    <p class="small text-muted">Your data never leaves your Microsoft 365 tenant. The scanning engine is 100% client-side.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-3">
+                    <h5><i class="fa fa-refresh text-primary mr-2"></i> Updates</h5>
+                    <p class="small text-muted">You will receive automatic detection engine improvements through the Microsoft Commercial Marketplace.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-3">
+                    <h5><i class="fa fa-envelope-o text-primary mr-2"></i> Support</h5>
+                    <p class="small text-muted">Need technical help? Contact us at support@dforts.com for priority assistance.</p>
+                </div>
             </div>
         </div>
     </div>
