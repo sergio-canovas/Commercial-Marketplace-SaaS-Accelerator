@@ -197,6 +197,7 @@ public class Startup
         services.AddScoped<IPlanEventsMappingRepository, PlanEventsMappingRepository>();
         services.AddScoped<IEventsRepository, EventsRepository>();
         services.AddScoped<IEmailService, SMTPEmailService>();
+        services.AddScoped<ITenantTrialRepository, TenantTrialRepository>();
         services.AddScoped<ITenantEntitlementService, TenantEntitlementService>();
         services.AddScoped<SaaSClientLogger<HomeController>>();
         services.AddScoped<IWebNotificationService, WebNotificationService>();
