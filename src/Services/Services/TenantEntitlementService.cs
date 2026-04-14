@@ -44,9 +44,12 @@ public class TenantEntitlementService : ITenantEntitlementService
             var trial = this.tenantTrialRepository.GetByTenantId(tenantId);
             if (trial == null)
             {
-                // Never started a trial, let's create one now
-                this.tenantTrialRepository.CreateTrial(tenantId);
-                trial = this.tenantTrialRepository.GetByTenantId(tenantId);
+                // No subscription and no trial started
+                return new TenantEntitlementResult
+                {
+                    Status = "inactive",
+                    Message = "No active subscription found for this tenant. Please start a free trial or purchase a plan."
+                };
             }
 
             var daysElapsed = (int)(DateTime.UtcNow - trial.StartDateUtc).TotalDays;

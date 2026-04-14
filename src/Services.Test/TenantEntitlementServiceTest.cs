@@ -69,7 +69,9 @@ public class TenantEntitlementServiceTest
     public void ReturnsInactiveWhenTenantIsUnknown()
     {
         var repository = CreateRepository(Array.Empty<Subscriptions>());
-        var trialRepo = new Mock<Marketplace.SaaS.Accelerator.DataAccess.Contracts.ITenantTrialRepository>(); trialRepo.Setup(r => r.GetByTenantId(It.IsAny<Guid>())).Returns(new Marketplace.SaaS.Accelerator.DataAccess.Entities.TenantTrial { StartDateUtc = DateTime.UtcNow }); var service = new TenantEntitlementService(repository.Object, trialRepo.Object);
+        var trialRepo = new Mock<Marketplace.SaaS.Accelerator.DataAccess.Contracts.ITenantTrialRepository>();
+        trialRepo.Setup(r => r.GetByTenantId(It.IsAny<Guid>())).Returns((Marketplace.SaaS.Accelerator.DataAccess.Entities.TenantTrial)null);
+        var service = new TenantEntitlementService(repository.Object, trialRepo.Object);
 
         var result = service.GetByTenantId(Guid.NewGuid());
 
