@@ -81,34 +81,34 @@ jobs:
         publish-profile: ${{ secrets.AZURE_PUBLISHER_WEBAPP_PUBLISH_PROFILE }}
         package: ${{ env.PUBLISHER_AZURE_WEBAPP_PACKAGE_PATH }}
     
-    - name: EF Database Update
-      shell: pwsh
-      run: |
-            Write-Host "dotnet tools restore"
-            dotnet tool install --global dotnet-ef --version 8.0.0
-            
-            Write-Host "Set to the Admin site connection string"
-            $sqlServerName = "${{ secrets.SQL_SERVER_NAME }}"
-            $sqlServerFullName = $sqlServerName+".database.windows.net"            
-            $sqlDatabaseName = "${{ secrets.SQL_DATABASE_NAME }}"
-            $sqlAdminLogin = "${{ secrets.SQL_ADMIN_LOGIN }}"
-            $sqlAdminPassword = "${{ secrets.SQL_ADMIN_LOGIN_PASSWORD }}"
+    # - name: EF Database Update
+    #   shell: pwsh
+    #   run: |
+    #         Write-Host "dotnet tools restore"
+    #         dotnet tool install --global dotnet-ef --version 8.0.0
+    #         
+    #         Write-Host "Set to the Admin site connection string"
+    #         $sqlServerName = "${{ secrets.SQL_SERVER_NAME }}"
+    #         $sqlServerFullName = $sqlServerName+".database.windows.net"            
+    #         $sqlDatabaseName = "${{ secrets.SQL_DATABASE_NAME }}"
+    #         $sqlAdminLogin = "${{ secrets.SQL_ADMIN_LOGIN }}"
+    #         $sqlAdminPassword = "${{ secrets.SQL_ADMIN_LOGIN_PASSWORD }}"
 
-            $connectionString = $Connection="Data Source=tcp:"+$sqlServerFullName+",1433;Initial Catalog="+$sqlDatabaseName+";User Id="+$sqlAdminLogin+"@"+$sqlServerFullName+";Password="+$sqlAdminPassword+";"
-            $publisherPath = "${{env.PUBLISHER_PROJECT_PATH}}/appsettings.Development.json"
-            Set-Content -Path $publisherPath -value "{`"ConnectionStrings`": {`"DefaultConnection`":`"$connectionString`"}}"
+    #         $connectionString = $Connection="Data Source=tcp:"+$sqlServerFullName+",1433;Initial Catalog="+$sqlDatabaseName+";User Id="+$sqlAdminLogin+"@"+$sqlServerFullName+";Password="+$sqlAdminPassword+";"
+    #         $publisherPath = "${{env.PUBLISHER_PROJECT_PATH}}/appsettings.Development.json"
+    #         Set-Content -Path $publisherPath -value "{`"ConnectionStrings`": {`"DefaultConnection`":`"$connectionString`"}}"
             
-            Write-Host "Generate sql script"
-            $sqlscriptPath = "${{env.SQLSCRIPT_PATH}}/script.sql"
-            $dbAccessProj = "${{env.DATAACCESS_PROJECT}}"
-            $adminSiteProj = "${{env.PUBLISHER_PROJECT}}"
-            dotnet-ef migrations script  --output $sqlscriptPath --idempotent --context SaaSKitContext --project $dbAccessProj --startup-project $adminSiteProj
+    #         Write-Host "Generate sql script"
+    #         $sqlscriptPath = "${{env.SQLSCRIPT_PATH}}/script.sql"
+    #         $dbAccessProj = "${{env.DATAACCESS_PROJECT}}"
+    #         $adminSiteProj = "${{env.PUBLISHER_PROJECT}}"
+    #         dotnet-ef migrations script  --output $sqlscriptPath --idempotent --context SaaSKitContext --project $dbAccessProj --startup-project $adminSiteProj
             
-            Write-Host "Run sql script"
-            Set-PSRepository PSGallery -InstallationPolicy Trusted
-            Install-Module sqlserver
-            Invoke-Sqlcmd -InputFile $sqlscriptPath -ServerInstance $sqlServerFullName -database $sqlDatabaseName -Username $sqlAdminLogin -Password $sqlAdminPassword 
-            Write-Host "Database updated successfully"
+    #         Write-Host "Run sql script"
+    #         Set-PSRepository PSGallery -InstallationPolicy Trusted
+    #         Install-Module sqlserver
+    #         Invoke-Sqlcmd -InputFile $sqlscriptPath -ServerInstance $sqlServerFullName -database $sqlDatabaseName -Username $sqlAdminLogin -Password $sqlAdminPassword 
+    #         Write-Host "Database updated successfully"
   
 
     # Run Admin APP UI tests
