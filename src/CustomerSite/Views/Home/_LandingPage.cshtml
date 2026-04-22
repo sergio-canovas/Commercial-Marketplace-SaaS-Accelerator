@@ -1,5 +1,3 @@
-﻿@*@using Microsoft.Marketplace.SaasKit.Models*@
-
 @using Marketplace.SaaS.Accelerator.Services.Models
 @model Marketplace.SaaS.Accelerator.Services.Models.SubscriptionResultExtension
 
@@ -8,84 +6,74 @@
 }
 @if (!Model.ShowWelcomeScreen)
 {
-    <div class="container" id="divHome">
-        <form method="post" id="frmIndex">
-
-            <div class="text-white mt20">
-                <span class="cm-section-heading">Subscription Details</span>
+    <div class="container mt-5" id="divHome">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-bottom-0 pt-4 pb-2">
+                <h3 class="mb-0" style="color: #004578;"><i class="fa fa-shield text-primary me-2"></i> Subscription Management</h3>
             </div>
-            @if (Model != null && !string.IsNullOrEmpty(Model.ErrorMessage))
-            {
-                <div class="alert alert-danger">
-                    <strong>Error!</strong> Some Error Occurred During Operation!
-                </div>
-            }
-            else
-            {
-                <div class="cm-panel-default mt20">
-                    <dl class="row text-left">
-                        <dt class="col-sm-3 p-2 p10">
-                            @Html.DisplayName("Customer Email")
-                        </dt>
-                        <dd class="col-sm-9 p-2 p10">
-                            @Html.DisplayFor(model => model.CustomerEmailAddress)
-                        </dd>
-                        <dt class="col-sm-3 p-2 p10">
-                            @Html.DisplayName("Customer Name ")
-                        </dt>
-                        <dd class="col-sm-9 p-2 p10">
-                            @Html.DisplayFor(model => model.CustomerName)
-                        </dd>
-                        <dt class="col-sm-3 p-2 p10">
-                            @Html.DisplayName("ID ")
-                        </dt>
-                        <dd class="col-sm-9 p-2 p10">
-                            @Html.DisplayFor(model => model.Id)
-                        </dd>
-                        <dt class="col-sm-3 p-2 p10">
-                            @Html.DisplayName("Name ")
-                        </dt>
-                        <dd class="col-sm-9 p-2">
-                            @Html.DisplayFor(model => model.Name)
-                        </dd>
-                        <dt class="col-sm-3 p-2 p10">
-                            @Html.DisplayName("Status ")
-                        </dt>
-                        <dd class="col-sm-9 p-2 p10">
-                            @Html.DisplayFor(model => model.SubscriptionStatus)
-                        </dd>
-                        <dt class="col-sm-3 p-2 p10">
-                            @Html.DisplayName("Offer Name ")
-                        </dt>
-                        <dd class="col-sm-9 p-2 p10">
-                            @Html.DisplayFor(model => model.OfferId)
-                        </dd>
-                        <dt class="col-sm-3 p-2 p10">
-                            @Html.DisplayName("Plan ")
-                        </dt>
-                        <dd class="col-sm-9 p-2 p10">
-                            @Html.DisplayFor(model => model.PlanId)
-                        </dd>
-                        <dt class="col-sm-3 p-2 p10">
-                            @Html.DisplayName("Purchaser Email ")
-                        </dt>
-                        <dd class="col-sm-9 p-2 p10">
-                            @Html.DisplayFor(model => model.Purchaser.EmailId)
-                            @Html.HiddenFor(model => model.Purchaser.EmailId)
-                        </dd>
+            <div class="card-body p-4 pt-2">
+                <form method="post" id="frmIndex">
+                    @if (Model != null && !string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="fa fa-exclamation-triangle me-2"></i>
+                            <div>
+                                <strong>Error!</strong> @Model.ErrorMessage
+                            </div>
+                        </div>
+                    }
 
-                        <dt class="col-sm-3 p-2 p10">
-                            @Html.DisplayName("Azure Tenant ID ")
-                        </dt>
-                        <dd class="col-sm-9 p-2 p10">
-                            @Html.DisplayFor(model => model.Purchaser.TenantId)
+                    <h5 class="border-bottom pb-2 mb-4 mt-3 text-secondary">Customer Information</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <label class="text-muted small text-uppercase fw-bold">Customer Name</label>
+                            <div class="fw-semibold">@Html.DisplayFor(model => model.CustomerName)</div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="text-muted small text-uppercase fw-bold">Customer Email</label>
+                            <div class="fw-semibold">@Html.DisplayFor(model => model.CustomerEmailAddress)</div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="text-muted small text-uppercase fw-bold">Azure Tenant ID</label>
+                            <div class="fw-semibold text-break">@Html.DisplayFor(model => model.Purchaser.TenantId)</div>
                             @Html.HiddenFor(model => model.Purchaser.TenantId)
-                        </dd>
+                            @Html.HiddenFor(model => model.Purchaser.EmailId)
+                        </div>
+                    </div>
 
-                        @if (Model.SubscriptionParameters != null && Model.SubscriptionParameters.Count() > 0)
-                        {
+                    <h5 class="border-bottom pb-2 mb-4 text-secondary">Subscription Details</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <label class="text-muted small text-uppercase fw-bold">Status</label>
+                            <div>
+                                @if(Model.SubscriptionStatus == SubscriptionStatusEnumExtension.Subscribed) {
+                                    <span class="badge bg-success" style="font-size: 0.9rem;"><i class="fa fa-check-circle me-1"></i> Active</span>
+                                } else if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart) {
+                                    <span class="badge bg-warning text-dark" style="font-size: 0.9rem;"><i class="fa fa-clock-o me-1"></i> Pending Activation</span>
+                                } else if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.Unsubscribed) {
+                                    <span class="badge bg-danger" style="font-size: 0.9rem;"><i class="fa fa-times-circle me-1"></i> Unsubscribed</span>
+                                } else {
+                                    <span class="badge bg-secondary" style="font-size: 0.9rem;">@Html.DisplayFor(model => model.SubscriptionStatus)</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="text-muted small text-uppercase fw-bold">Subscription Name</label>
+                            <div class="fw-semibold">@Html.DisplayFor(model => model.Name)</div>
+                            <div class="small text-muted">ID: @Html.DisplayFor(model => model.Id)</div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="text-muted small text-uppercase fw-bold">Plan / Offer</label>
+                            <div class="fw-semibold">@Html.DisplayFor(model => model.PlanId)</div>
+                            <div class="small text-muted">Offer: @Html.DisplayFor(model => model.OfferId)</div>
+                        </div>
+                    </div>
 
-                            for (int i = 0; i < Model.SubscriptionParameters.Count(); i++)
+                    @if (Model.SubscriptionParameters != null && Model.SubscriptionParameters.Count() > 0)
+                    {
+                        <h5 class="border-bottom pb-2 mb-4 text-secondary">Configuration Parameters</h5>
+                        <div class="row mb-4">
+                            @for (int i = 0; i < Model.SubscriptionParameters.Count(); i++)
                             {
                                 @Html.HiddenFor(model => model.SubscriptionParameters[i].Id)
                                 @Html.HiddenFor(model => model.SubscriptionParameters[i].PlanAttributeId)
@@ -96,189 +84,157 @@
                                 @Html.HiddenFor(model => model.SubscriptionParameters[i].DisplayName)
                                 @Html.HiddenFor(model => model.SubscriptionParameters[i].Type)
 
-                                if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart)
-                                {
-                                    <dt class="col-sm-3 p-2 p10 @Model.SubscriptionParameters[i].Type">
-                                        @Html.DisplayFor(model => model.SubscriptionParameters[i].DisplayName, new { required = "required", @class = @Model.SubscriptionParameters[i].Type })
-                                        @if (Model.SubscriptionParameters[i].IsRequired == true)
-                                        {<span class="red-star @Model.SubscriptionParameters[i].Type">*</span>}
-
-
-                                    </dt>
-                                }
-                                else
-                                {
-                                    @if (Model.SubscriptionParameters[i].Type.ToLower() == "input")
+                                <div class="col-md-6 mb-3 @Model.SubscriptionParameters[i].Type">
+                                    @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart)
                                     {
-                                        <dt class="col-sm-3 p-2 p10 @Model.SubscriptionParameters[i].Type">
+                                        <label class="form-label fw-semibold">
                                             @Html.DisplayFor(model => model.SubscriptionParameters[i].DisplayName)
-                                        </dt>
-                                    }
-                                }
-
-                                @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart)
-                                {
-                                    @if (Model.SubscriptionParameters[i].FromList == true)
-                                    {
-                                        var data = Model.SubscriptionParameters[i].ValuesList;
-                                        var selectList = new SelectList(data.Split(','));
-
-
-                                        <dd class="col-sm-9 p-2 p10 @Model.SubscriptionParameters[i].Type">
-
                                             @if (Model.SubscriptionParameters[i].IsRequired == true)
-                                            {
-                                                @Html.DropDownList(string.Format("SubscriptionParameters[{0}].Value", @i), selectList, new { @class = @Model.SubscriptionParameters[i].Type + " w200", @required = "required", name = string.Format("SubscriptionParameters[{0}].Value", @i), @id = string.Format("SubscriptionParameters_{0}__Value", @i) })
+                                            {<span class="text-danger">*</span>}
+                                        </label>
 
-                                            }
-                                            else
-                                            {
-                                                @Html.DropDownList(string.Format("SubscriptionParameters[{0}].Value", @i), selectList, new { @class = @Model.SubscriptionParameters[i].Type + " w200", name = string.Format("SubscriptionParameters[{0}].Value", @i), @id = string.Format("SubscriptionParameters_{0}__Value", @i) })
-
-                                            }
-
-                                        </dd>
-
-                                    }
-                                    else if (Model.SubscriptionParameters[i].Htmltype == "date")
-                                    {
-                                        <dd class="col-sm-9 p-2 p10 @Model.SubscriptionParameters[i].Type">
-
-                                            @if (Model.SubscriptionParameters[i].IsRequired == true)
-                                            {
-                                                @Html.TextBoxFor(model => model.SubscriptionParameters[i].Value, new { @class = @Model.SubscriptionParameters[i].Type + " w200", @required = "required", @type = @Model.SubscriptionParameters[i].Htmltype })
-                                            }
-                                            else
-                                            {
-                                                @Html.TextBoxFor(model => model.SubscriptionParameters[i].Value, new { @class = @Model.SubscriptionParameters[i].Type + " w200", @type = @Model.SubscriptionParameters[i].Htmltype })
-                                            }
-
-                                        </dd>
+                                        @if (Model.SubscriptionParameters[i].FromList == true)
+                                        {
+                                            var data = Model.SubscriptionParameters[i].ValuesList;
+                                            var selectList = new SelectList(data.Split(','));
+                                            var req = Model.SubscriptionParameters[i].IsRequired == true ? "required" : null;
+                                            
+                                            @Html.DropDownList(string.Format("SubscriptionParameters[{0}].Value", @i), selectList, new { @class = "form-select", required = req, name = string.Format("SubscriptionParameters[{0}].Value", @i), @id = string.Format("SubscriptionParameters_{0}__Value", @i) })
+                                        }
+                                        else
+                                        {
+                                            var req = Model.SubscriptionParameters[i].IsRequired == true ? "required" : null;
+                                            @Html.TextBoxFor(model => model.SubscriptionParameters[i].Value, new { @class = "form-control", required = req, @type = @Model.SubscriptionParameters[i].Htmltype })
+                                        }
                                     }
                                     else
                                     {
-                                        <dd class="col-sm-9 p-2 p10 @Model.SubscriptionParameters[i].Type">
-
-                                            @if (Model.SubscriptionParameters[i].IsRequired == true)
-                                            {
-                                                @Html.TextBoxFor(model => model.SubscriptionParameters[i].Value, new { @class = @Model.SubscriptionParameters[i].Type + " w200", @required = "required", @type = @Model.SubscriptionParameters[i].Htmltype })
-                                            }
-                                            else
-                                            {
-                                                @Html.TextBoxFor(model => model.SubscriptionParameters[i].Value, new { @class = @Model.SubscriptionParameters[i].Type + " w200", @type = @Model.SubscriptionParameters[i].Htmltype })
-                                            }
-
-                                        </dd>
+                                        @if (Model.SubscriptionParameters[i].Type.ToLower() == "input")
+                                        {
+                                            <label class="text-muted small text-uppercase fw-bold">@Html.DisplayFor(model => model.SubscriptionParameters[i].DisplayName)</label>
+                                            <div class="fw-semibold">
+                                                @Html.DisplayFor(model => model.SubscriptionParameters[i].Value)
+                                                @Html.HiddenFor(model => model.SubscriptionParameters[i].Value)
+                                            </div>
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    @if (Model.SubscriptionParameters[i].Type.ToLower() == "input")
-                                    {
-                                        <dd class="col-sm-9 p-2 p10  @Model.SubscriptionParameters[i].Type">
-                                            @Html.DisplayFor(model => model.SubscriptionParameters[i].Value)
-                                            @Html.HiddenFor(model => model.SubscriptionParameters[i].Value)
-                                        </dd>
-                                    }
-                                }
+                                </div>
                             }
+                        </div>
+                    }
 
+                    <div class="d-flex justify-content-end border-top pt-4 mt-2 gap-2">
+                        @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.Subscribed)
+                        {
+                            <button type="submit" asp-action="SubscriptionOperation" asp-route-subscriptionId="@Model.Id" asp-route-planId="@Model.PlanId" asp-route-operation="Deactivate" class="btn btn-outline-danger fw-bold"><i class="fa fa-ban me-1"></i> Unsubscribe</button>
+                            <button type="submit" asp-action="Subscriptions" class="btn btn-outline-secondary fw-bold"><i class="fa fa-list me-1"></i> Go to Subscription List</button>
                         }
-
-                    </dl>
-                </div>
-                <div class="text-end">
-                    @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.Subscribed)
-                    {
-                        <button type="submit" asp-action="SubscriptionOperation" asp-route-subscriptionId="@Model.Id" asp-route-planId="@Model.PlanId" asp-route-operation="Deactivate" class="cm-button-danger text-right">Unsubscribe</button>
-                        <button type="submit" asp-action="Subscriptions" class="cm-button-default text-end">Go to Subscription List</button>
-                    }
-                    @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart && Model.IsAutomaticProvisioningSupported == true)
-                    {
-                        <a onclick="SubscriptionOperation('@Model.Id','@Model.PlanId','Activate')" id="btnActive" class="cm-button-default text-end">Activate</a>
-                    }
-                    @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart && Model.IsAutomaticProvisioningSupported == false)
-                    {
-                        <a onclick="SubscriptionOperation('@Model.Id','@Model.PlanId','Activate')" id="btnActive" class="cm-button-default text-end" style="text-decoration:none;">Subscribe</a>
-                    }
-                </div>
-            }
-        </form>
+                        @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart && Model.IsAutomaticProvisioningSupported == true)
+                        {
+                            <a onclick="SubscriptionOperation('@Model.Id','@Model.PlanId','Activate')" id="btnActive" class="btn btn-primary fw-bold px-4" style="background-color:#004578; border-color:#004578;"><i class="fa fa-check me-1"></i> Activate Subscription</a>
+                        }
+                        @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart && Model.IsAutomaticProvisioningSupported == false)
+                        {
+                            <a onclick="SubscriptionOperation('@Model.Id','@Model.PlanId','Activate')" id="btnActive" class="btn btn-primary fw-bold px-4" style="background-color:#004578; border-color:#004578;"><i class="fa fa-check me-1"></i> Subscribe</a>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 }
 else
 {
     <div class="container mt-5">
-        <div class="row jumbotron cm-panel-default shadow-sm border-0 rounded-lg p-5">
-            <div class="col-md-8 text-left">
-                <h1 class="display-4 font-weight-bold" style="color: #004578;">Welcome to dForts!</h1>
-                <p class="lead mt-3">
-                    You are one step away from ensuring data governance in your organization before deploying Microsoft 365 Copilot.
-                </p>
-                <hr class="my-4">
-                
-                <h4 class="mb-3">How to get started:</h4>
-                <ul class="list-unstyled">
-                    <li class="mb-3">
-                        <i class="fa fa-check-circle text-success mr-2"></i> 
-                        <strong>1. Purchase or Trial:</strong> If you haven't yet, subscribe to the "Copilot Readiness Monitor" in the Microsoft Commercial Marketplace.
-                    </li>
-                    <li class="mb-3">
-                        <i class="fa fa-check-circle text-success mr-2"></i> 
-                        <strong>2. Tenant Deployment:</strong> Go to the Microsoft 365 Admin Center > Integrated Apps and ensure the solution is deployed.
-                    </li>
-                    <li class="mb-3">
-                        <i class="fa fa-check-circle text-success mr-2"></i> 
-                        <strong>3. Add to SharePoint:</strong> Navigate to any site you wish to audit and add the "dForts: Copilot Readiness Monitor" Web Part to a modern page.
-                    </li>
-                    <li class="mb-3">
-                        <i class="fa fa-check-circle text-success mr-2"></i> 
-                        <strong>4. First Scan:</strong> As a Site Owner, run the deep scan to identify oversharing risks immediately.
-                    </li>
-                </ul>
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <img src="~/logo.jpeg" alt="dForts Logo" class="mb-3 shadow-sm" style="max-height: 70px; border-radius: 8px;" />
+            <h2 class="fw-bold" style="color: #004578;">Copilot Readiness Monitor</h2>
+            <p class="lead text-muted mx-auto mt-3" style="max-width: 800px;">
+                Ensure data governance and prevent oversharing risks in your organization before deploying Microsoft 365 Copilot. Complete the onboarding process below to secure your tenant.
+            </p>
+        </div>
 
-                <div class="mt-4">
-                    <a class="btn cm-button-default px-4 py-2 text-white" style="text-decoration:none;" href="https://github.com/dForts/CopilotReadinessDocs" target="_blank">
-                        <i class="fa fa-book mr-2"></i> View IT Administrator Guide
-                    </a>
+        <!-- Onboarding Steps -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mx-auto mb-3" style="width: 64px; height: 64px;">
+                        <i class="fa fa-shopping-cart fs-3" style="color: #004578;"></i>
+                    </div>
+                    <h5 class="fw-bold fs-6">1. Subscription</h5>
+                    <p class="small text-muted mb-0">Subscribe to the Copilot Readiness Monitor in the Microsoft Commercial Marketplace.</p>
                 </div>
             </div>
-            
-            <div class="col-md-4 text-center d-none d-md-block">
-                <div class="p-4 bg-light rounded-circle shadow-sm mx-auto" style="width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; overflow:hidden;">
-                     <img src="~/logo.jpeg" alt="dForts Logo" style="max-width: 100%;" />
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mx-auto mb-3" style="width: 64px; height: 64px;">
+                        <i class="fa fa-cloud-upload fs-3" style="color: #004578;"></i>
+                    </div>
+                    <h5 class="fw-bold fs-6">2. Tenant Deployment</h5>
+                    <p class="small text-muted mb-0">Deploy the solution globally via the Microsoft 365 Admin Center (Integrated Apps).</p>
                 </div>
-                <div class="mt-4">
-                    <div class="text-muted small">Secure your Copilot deployment with dForts.</div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mx-auto mb-3" style="width: 64px; height: 64px;">
+                        <i class="fa fa-window-restore fs-3" style="color: #004578;"></i>
+                    </div>
+                    <h5 class="fw-bold fs-6">3. Add to SharePoint</h5>
+                    <p class="small text-muted mb-0">Navigate to any SharePoint site you wish to audit and add the dForts Web Part.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mx-auto mb-3" style="width: 64px; height: 64px;">
+                        <i class="fa fa-search fs-3" style="color: #004578;"></i>
+                    </div>
+                    <h5 class="fw-bold fs-6">4. Deep Scan</h5>
+                    <p class="small text-muted mb-0">Run the initial scan to identify and mitigate oversharing risks immediately.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Quick Support Section -->
-        <div class="row mt-5 text-left">
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-3">
-                    <h5><i class="fa fa-shield text-primary mr-2"></i> Total Privacy</h5>
-                    <p class="small text-muted">Your data never leaves your Microsoft 365 tenant. The scanning engine is 100% client-side.</p>
-                </div>
+        <!-- Documentation & Value Prop -->
+        <div class="row g-4 align-items-center mb-5">
+            <div class="col-md-6 text-center text-md-start">
+                <h4 class="fw-bold" style="color: #004578;">Administrator Resources</h4>
+                <p class="text-muted">
+                    Access our comprehensive technical documentation to review the architecture, security practices, and detailed deployment instructions.
+                </p>
+                <a class="btn btn-outline-primary fw-bold px-4 py-2 mt-2" href="https://github.com/dForts/CopilotReadinessDocs" target="_blank" style="color: #004578; border-color: #004578;">
+                    <i class="fa fa-book me-2"></i> IT Administrator Guide
+                </a>
             </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-3">
-                    <h5><i class="fa fa-refresh text-primary mr-2"></i> Updates</h5>
-                    <p class="small text-muted">You will receive automatic detection engine improvements through the Microsoft Commercial Marketplace.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-3">
-                    <h5><i class="fa fa-envelope-o text-primary mr-2"></i> Support</h5>
-                    <p class="small text-muted">Need technical help? Contact us at support@dforts.com for priority assistance.</p>
+            <div class="col-md-6">
+                <div class="card border-0 bg-light p-4 rounded-3">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-shield fs-4 mt-1 me-3 text-success"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Total Data Privacy</h6>
+                            <p class="small text-muted mb-0">Your data never leaves your Microsoft 365 tenant. The scanning engine operates 100% client-side.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-refresh fs-4 mt-1 me-3 text-success"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Continuous Updates</h6>
+                            <p class="small text-muted mb-0">Receive automatic detection engine improvements securely through the Commercial Marketplace.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start">
+                        <i class="fa fa-envelope-o fs-4 mt-1 me-3 text-success"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Priority Support</h6>
+                            <p class="small text-muted mb-0">Need technical assistance? Our enterprise support team is available at <a href="mailto:support@dforts.com" class="text-decoration-none fw-semibold">support@dforts.com</a>.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 }
 <script type="text/javascript">
-
     function SubscriptionOperation(subscriptionId, planId, operation) {
         if (validate()) {
             var formobject = $('#frmIndex').serialize();
@@ -300,21 +256,32 @@ else
         }
         else {
             swal({
-                title: "Required",
-                text: "Please fill all required values",
+                title: "Validation Error",
+                text: "Please ensure all required fields are filled before proceeding.",
                 icon: "warning"
-            })
-
+            });
         }
     }
-
 
     function validate() {
         var valid = true;
         $(':input[required]:visible').each(function () {
-            if ($(this).val() == "") //check loginc here
-                return valid = false;
+            if ($(this).val() == "") {
+                $(this).addClass('is-invalid');
+                valid = false;
+            } else {
+                $(this).removeClass('is-invalid');
+            }
         });
         return valid;
     }
+
+    // Real-time validation feedback
+    $(document).ready(function() {
+        $(':input[required]').on('change', function() {
+            if ($(this).val() != "") {
+                $(this).removeClass('is-invalid');
+            }
+        });
+    });
 </script>
