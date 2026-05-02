@@ -467,10 +467,11 @@ public class HomeController : BaseController
     /// The <see cref="IActionResult" />.
     /// </returns>
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult Error(string message = null)
     {
         var exceptionDetail = this.HttpContext.Features.Get<IExceptionHandlerFeature>();
-        return this.View(exceptionDetail?.Error);
+        var ex = exceptionDetail?.Error ?? (message != null ? new Exception(message) : new Exception("An unknown error occurred."));
+        return this.View(ex);
     }
 
     /// <summary>

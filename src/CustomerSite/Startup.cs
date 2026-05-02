@@ -63,6 +63,7 @@ public class Startup
             // This lambda determines whether user consent for non-essential cookies is needed for a given request.
             options.CheckConsentNeeded = context => true;
             options.MinimumSameSitePolicy = SameSiteMode.None;
+            options.Secure = CookieSecurePolicy.Always;
         });
 
         var config = new SaaSApiClientConfiguration()
@@ -104,6 +105,15 @@ public class Startup
                 options.SignedOutRedirectUri = config.SignedOutRedirectUri;
                 options.TokenValidationParameters.NameClaimType = ClaimConstants.CLAIM_SHORT_NAME;
                 options.TokenValidationParameters.ValidateIssuer = false;
+                options.Events = new OpenIdConnectEvents
+                {
+                    OnRemoteFailure = context =>
+                    {
+                        context.Response.Redirect($"/Home/Error?message={Uri.EscapeDataString(context.Failure.Message)}");
+                        context.HandleResponse();
+                        return System.Threading.Tasks.Task.CompletedTask;
+                    }
+                };
             });
         services
             .AddTransient<IClaimsTransformation, CustomClaimsTransformation>()
