@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -58,6 +59,13 @@ public class Startup
     /// <param name="services">The services<see cref="IServiceCollection"/>.</param>
     public void ConfigureServices(IServiceCollection services)
     {
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
+        });
+
         services.Configure<CookiePolicyOptions>(options =>
         {
             // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -109,7 +117,18 @@ public class Startup
                 {
                     OnRemoteFailure = context =>
                     {
-                        context.Response.Redirect($"/Home/Error?message={Uri.EscapeDataString(context.Failure.Message)}");
+                        var parts = new System.Collections.Generic.List<string>();
+                        var ex = context.Failure;
+                        while (ex != null)
+                        {
+                            if (!string.IsNullOrEmpty(ex.Message))
+                            {
+                                parts.Add(ex.Message);
+                            }
+                            ex = ex.InnerException;
+                        }
+                        var message = parts.Count > 0 ? string.Join(" | ", parts) : "Unknown OIDC remote failure.";
+                        context.Response.Redirect($"/Home/Error?message={Uri.EscapeDataString(message)}");
                         context.HandleResponse();
                         return System.Threading.Tasks.Task.CompletedTask;
                     }
@@ -168,6 +187,8 @@ public class Startup
     /// <param name="loggerFactory">The loggerFactory<see cref="ILoggerFactory" />.</param>
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
     {
+        app.UseForwardedHeaders();
+
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
