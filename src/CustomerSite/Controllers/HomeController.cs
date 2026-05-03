@@ -626,6 +626,21 @@ public class HomeController : BaseController
                         catch (MarketplaceException fex)
                         {
                             this.logger.Error(fex.Message);
+                            try
+                            {
+                                this.subscriptionLogRepository.LogStatusDuringProvisioning(subscriptionId, $"MarketplaceException in SubscriptionOperationAsync: {fex.Message} :: Inner: {fex.InnerException?.Message}", "TRACE_CONTROLLER_MKT_EX");
+                            }
+                            catch { }
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.Error($"Unhandled in SubscriptionOperationAsync Activate: {ex.Message} :: {ex.InnerException}");
+                            try
+                            {
+                                this.subscriptionLogRepository.LogStatusDuringProvisioning(subscriptionId, $"Unhandled exception in SubscriptionOperationAsync: [{ex.GetType().Name}] {ex.Message} :: Inner: {ex.InnerException?.Message}", "TRACE_CONTROLLER_GEN_EX");
+                            }
+                            catch { }
+                            throw;
                         }
                     }
 

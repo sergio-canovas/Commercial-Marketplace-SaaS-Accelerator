@@ -62,15 +62,28 @@ public class PendingActivationStatusHandler : AbstractSubscriptionStatusHandler
     /// <param name="subscriptionID">The subscription identifier.</param>
     public override void Process(Guid subscriptionID)
     {
+        this.subscriptionLogRepository.LogStatusDuringProvisioning(subscriptionID, "Process() entered", "TRACE_HANDLER_START");
         this.logger?.LogInformation("PendingActivationStatusHandler {0}", subscriptionID);
         var subscription = this.GetSubscriptionById(subscriptionID);
+        if (subscription == null)
+        {
+            this.subscriptionLogRepository.LogStatusDuringProvisioning(subscriptionID, "GetSubscriptionById returned null", "TRACE_NO_SUBSCRIPTION");
+            return;
+        }
+        this.subscriptionLogRepository.LogStatusDuringProvisioning(subscriptionID, $"Subscription found. Status='{subscription.SubscriptionStatus}', UserId={subscription.UserId}, PlanId={subscription.AmpplanId}", "TRACE_SUBSCRIPTION_LOADED");
         this.logger?.LogInformation("Result subscription : {0}", JsonSerializer.Serialize(subscription.AmpplanId));
         this.logger?.LogInformation("Get User");
         var userdeatils = this.GetUserById(subscription.UserId);
+        if (userdeatils == null)
+        {
+            this.subscriptionLogRepository.LogStatusDuringProvisioning(subscriptionID, $"GetUserById({subscription.UserId}) returned null", "TRACE_NO_USER");
+            return;
+        }
         string oldstatus = subscription.SubscriptionStatus;
 
         if (subscription.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingActivation.ToString())
         {
+            this.subscriptionLogRepository.LogStatusDuringProvisioning(subscriptionID, "Entering try - calling ActivateSubscriptionAsync", "TRACE_BEFORE_ACTIVATE");
             try
             {
                 this.logger?.LogInformation("Get attributelsit");
