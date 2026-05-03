@@ -50,6 +50,8 @@ public class BaseApiService
             statusCode = reqFailedInnerException.Status;
         }
 
+        var rawDetail = BuildExceptionDetail(ex);
+
         if (statusCode != 0)
         {
             Enum.TryParse<HttpStatusCode>(statusCode.ToString(), out HttpStatusCode httpStatusCode);
@@ -58,7 +60,7 @@ public class BaseApiService
 
             if (httpStatusCode == HttpStatusCode.Unauthorized || httpStatusCode == HttpStatusCode.Forbidden)
             {
-                throw new MarketplaceException("Token invalid or expired. Please try again.", SaasApiErrorCode.Unauthorized);
+                throw new MarketplaceException($"Token invalid or expired ({httpStatusCode}). Detail: {rawDetail}", SaasApiErrorCode.Unauthorized);
             }
             else if (httpStatusCode == HttpStatusCode.NotFound)
             {
@@ -84,7 +86,22 @@ public class BaseApiService
         else
         {
             this.Logger?.Error("Error while completing the request as " + JsonSerializer.Serialize(new { Error = ex.Message, }));
-            throw new MarketplaceException("Something went wrong, please check logs!");
+            throw new MarketplaceException($"Something went wrong. Detail: {rawDetail}");
         }
+    }
+
+    private static string BuildExceptionDetail(Exception ex)
+    {
+        var parts = new System.Collections.Generic.List<string>();
+        var current = ex;
+        while (current != null)
+        {
+            if (!string.IsNullOrEmpty(current.Message))
+            {
+                parts.Add($"[{current.GetType().Name}] {current.Message}");
+            }
+            current = current.InnerException;
+        }
+        return parts.Count > 0 ? string.Join(" | ", parts) : "no detail";
     }
 }
