@@ -514,6 +514,17 @@ public class HomeController : BaseController
     }
 
     /// <summary>
+    /// Privacy Policy page.
+    /// </summary>
+    /// <returns>
+    /// The <see cref="IActionResult" />.
+    /// </returns>
+    public IActionResult Privacy()
+    {
+        return this.View();
+    }
+
+    /// <summary>
     /// Terms of Use page.
     /// </summary>
     /// <returns>
