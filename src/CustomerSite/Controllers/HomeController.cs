@@ -503,6 +503,28 @@ public class HomeController : BaseController
     }
 
     /// <summary>
+    /// CSP Program page.
+    /// </summary>
+    /// <returns>
+    /// The <see cref="IActionResult" />.
+    /// </returns>
+    public IActionResult CSPProgram()
+    {
+        return this.View();
+    }
+
+    /// <summary>
+    /// Terms of Use page.
+    /// </summary>
+    /// <returns>
+    /// The <see cref="IActionResult" />.
+    /// </returns>
+    public IActionResult Terms()
+    {
+        return this.View();
+    }
+
+    /// <summary>
     /// Subscriptions the details.
     /// </summary>
     /// <param name="subscriptionId">The subscription identifier.</param>

@@ -1,6 +1,54 @@
-﻿@{
+@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="cm-panel-default mt40">
+    <h1 class="cm-section-heading">&#128274; dForts Copilot Readiness Monitor</h1>
+    <p class="text-muted">Privacy Policy &nbsp;·&nbsp; Last updated: April 2026</p>
+
+    <div class="card mt20 shadow-sm">
+        <div class="card-body p-4">
+            <h2 class="text-primary h5 mt-4">1. Who We Are</h2>
+            <p>This Privacy Policy applies to the <strong>dForts Copilot Readiness Monitor</strong> (the &ldquo;Product&rdquo;), published by <strong>dForts</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) on Microsoft AppSource and distributed as a SharePoint Framework (SPFx) solution.</p>
+            <p>Contact: <a href="mailto:support@dforts.com">support@dforts.com</a></p>
+
+            <h2 class="text-primary h5 mt-4">2. Scope</h2>
+            <p>This policy describes how we collect, use, and protect information when your organization installs and uses the dForts Copilot Readiness Monitor. It applies to all end users within the subscribing Microsoft 365 tenant.</p>
+            <p>This Product operates primarily <strong>within your own Microsoft 365 tenant</strong>. The only outbound data transfer to dForts infrastructure is the license validation request described in Section 4.</p>
+
+            <h2 class="text-primary h5 mt-4">3. Data Processed Within Your Tenant</h2>
+            <p>The following data is accessed at runtime to perform the oversharing analysis. It is <strong>never transmitted to dForts servers</strong> and is processed exclusively within your Microsoft 365 environment:</p>
+            <div class="table-responsive mt-3">
+                <table class="table table-sm table-bordered">
+                    <thead class="bg-light">
+                        <tr><th>Data type</th><th>Purpose</th><th>Storage</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>SharePoint site metadata and item IDs</td><td>Enumerate sites for tenant-wide report (Premium)</td><td>In-memory only</td></tr>
+                        <tr><td>File and folder metadata</td><td>Identify items with risky permission configurations</td><td>In-memory only</td></tr>
+                        <tr><td>SharePoint permission assignments</td><td>Detect oversharing (Anonymous, Everyone, External, Unique)</td><td>In-memory only</td></tr>
+                        <tr><td>Scan results summary and logs</td><td>Cache results and display history to site owners</td><td>Stored in hidden SharePoint lists within <strong>your own site</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="text-primary h5 mt-4">4. Data Transmitted to dForts</h2>
+            <p>The only information sent to dForts infrastructure is your <strong>Microsoft 365 Tenant ID (GUID)</strong>. This is transmitted via HTTPS to <code>copilot-readiness.dforts.solutions</code> at web part load time to verify license status. No personal data, file contents, or SharePoint metadata are transmitted.</p>
+
+            <h2 class="text-primary h5 mt-4">5. Microsoft Graph Permissions</h2>
+            <p>The Product requests delegated permissions (Sites.Read.All, Files.Read.All, GroupMember.Read.All, User.Read.All). All permissions are exercised under the delegated identity of the signed-in user and no data leaves the tenant.</p>
+
+            <h2 class="text-primary h5 mt-4">6. Data Retention</h2>
+            <p>SharePoint hidden lists (scan cache, acknowledgements, remediation log) are retained indefinitely until the site owner or administrator deletes them. dForts license database stores Tenant ID and subscription details for the duration of the subscription and for a period of up to one (1) year after the subscription terminates.</p>
+
+            <h2 class="text-primary h5 mt-4">7. Legal Basis for Processing (GDPR)</h2>
+            <p>Processing is based on <strong>Contract performance</strong> (Article 6(1)(b) GDPR) and <strong>Legitimate interests</strong> (Article 6(1)(f) GDPR) for license validation.</p>
+
+            <h2 class="text-primary h5 mt-4">8. Security</h2>
+            <p>All communication between the Product and dForts infrastructure uses HTTPS (TLS 1.2 or higher). SharePoint data never leaves your tenant.</p>
+
+            <h2 class="text-primary h5 mt-4">9. Contact</h2>
+            <p>For privacy-related inquiries: <a href="mailto:support@dforts.com">support@dforts.com</a></p>
+        </div>
+    </div>
+</div>

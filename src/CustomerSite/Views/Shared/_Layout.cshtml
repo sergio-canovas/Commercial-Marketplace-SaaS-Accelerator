@@ -47,7 +47,7 @@
                 @if (this.User.Identity.IsAuthenticated)
                 {
                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    <a class="nav-link" href="~/csp-program.html">CSP Program</a>
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="CSPProgram">CSP Program</a>
                     @if (TempData["ShowWelcomeScreen"] != null && Convert.ToString(TempData["ShowWelcomeScreen"]) == "True")
                     {
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Subscriptions">Subscriptions</a>
@@ -66,8 +66,8 @@
     <footer class="cm-footer">
         <div class="container text-center">
             &copy; 2026 - dForts - All rights reserved. | 
-            <a href="~/privacy.html" target="_blank" class="text-dark small" style="text-decoration:none;">Privacy Policy</a> | 
-            <a href="~/terms.html" target="_blank" class="text-dark small" style="text-decoration:none;">Terms of Use</a>
+            <a asp-controller="Home" asp-action="Privacy" class="text-dark small" style="text-decoration:none;">Privacy Policy</a> | 
+            <a asp-controller="Home" asp-action="Terms" class="text-dark small" style="text-decoration:none;">Terms of Use</a>
         </div>
     </footer>
 
