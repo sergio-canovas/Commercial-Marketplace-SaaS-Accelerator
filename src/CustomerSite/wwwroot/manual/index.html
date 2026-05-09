@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dForts: Copilot Readiness Monitor - User Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0078d4;
+            --primary-dark: #005a9e;
+            --text-color: #323130;
+            --bg-color: #faf9f8;
+            --sidebar-width: 280px;
+            --border-color: #edebe9;
+            --success-color: #107c10;
+            --warning-color: #797775;
+            --danger-color: #a4262c;
+        }
+
+        @media print {
+            .sidebar, .print-button { display: none !important; }
+            .main-content { margin-left: 0 !important; padding: 0 !important; }
+            section { page-break-inside: avoid; margin-bottom: 2rem; }
+            body { background: white; }
+            h2 { border-bottom: 2px solid #0078d4 !important; -webkit-print-color-adjust: exact; }
+            .info-box { background: #eff6fc !important; border-left: 4px solid #0078d4 !important; -webkit-print-color-adjust: exact; }
+            .step-item::before { background: #0078d4 !important; color: white !important; -webkit-print-color-adjust: exact; }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+        }
+
+        .print-button {
+            position: fixed;
+            top: 1.5rem;
+            right: 2rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: background 0.2s;
+        }
+
+        .print-button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            background-color: #eff6fc;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 3rem 4rem;
+            max-width: 1200px;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #201f1e;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+            color: #201f1e;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+        }
+
+        .screenshot-container {
+            margin: 2rem 0;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .screenshot {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .screenshot-caption {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #605e5c;
+            font-style: italic;
+        }
+
+        .placeholder-box {
+            background: #f3f2f1;
+            border: 2px dashed #c8c6c4;
+            padding: 4rem 2rem;
+            color: #605e5c;
+            border-radius: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-premium { background: #fdf3f4; color: var(--danger-color); border: 1px solid #f8d7da; }
+        .badge-standard { background: #eff6fc; color: var(--primary-color); border: 1px solid #deecf9; }
+
+        .info-box {
+            background-color: #eff6fc;
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 3.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-item::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            dForts Manual
+        </div>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#overview" class="nav-link active">Overview</a></li>
+                <li class="nav-item"><a href="#getting-started" class="nav-link">Getting Started</a></li>
+                <li class="nav-item"><a href="#running-scans" class="nav-link">Running Scans</a></li>
+                <li class="nav-item"><a href="#understanding-results" class="nav-link">Understanding Results</a></li>
+                <li class="nav-item"><a href="#heatmap" class="nav-link">Folder Heatmap</a></li>
+                <li class="nav-item"><a href="#remediation" class="nav-link">Remediating Risks</a></li>
+                <li class="nav-item"><a href="#audit-logs" class="nav-link">Audit Logs</a></li>
+                <li class="nav-item"><a href="#subscription" class="nav-link">Subscription & Trial</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <section id="overview">
+            <h1>Copilot Readiness Monitor</h1>
+            <p>Welcome to the <strong>dForts: Copilot Readiness Monitor</strong> user guide. This tool is designed to help SharePoint site owners identify and fix oversharing risks before enabling Microsoft 365 Copilot.</p>
+            <div class="info-box">
+                <strong>Why is this important?</strong> Copilot respects existing permissions. If a user has access to a file they shouldn't (due to "Everyone" groups or loose sharing links), Copilot might surface sensitive information from those files in its responses.
+            </div>
+            
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 1: DASHBOARD OVERVIEW -->
+                <img src="img/01-dashboard.png" alt="Dashboard Overview" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Dashboard Overview<br>
+                    (Capture the main web part screen after a scan is finished)
+                </div>
+                <span class="screenshot-caption">Main Dashboard showing Risk Score and scanned items.</span>
+            </div>
+        </section>
+
+        <section id="getting-started">
+            <h2>Getting Started</h2>
+            <p>The monitor is a SharePoint extension that <strong>automatically appears</strong> in the top bar of your sites once it has been installed and authorized by your IT Administrator.</p>
+            
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 00: TOP BAR ICON -->
+                <img src="img/00-top-bar.png" alt="Top Bar Icon" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> SharePoint Top Bar Icon<br>
+                    (Capture the top navigation bar of a SharePoint site showing the "Copilot Readiness" icon/button)
+                </div>
+                <span class="screenshot-caption">The monitor is always accessible from your site's top navigation bar.</span>
+            </div>
+
+            <ul class="step-list">
+                <li class="step-item">
+                    <h3>Access the Monitor</h3>
+                    <p>Simply navigate to any SharePoint site where you are an owner. Look for the <strong>Shield icon</strong> or the <strong>"Copilot Readiness"</strong> button in the top bar and click it to open the analysis panel.</p>
+                </li>
+                <li class="step-item">
+                    <h3>Verify Authorization</h3>
+                    <p>On your first visit, the tool will verify your tenant's subscription. If no subscription is found, you will see an "App Subscription Required" message with instructions on how to start your trial.</p>
+                </li>
+            </ul>
+        </section>
+
+        <section id="running-scans">
+            <h2>Running Scans</h2>
+            <p>To analyze your site's exposure, you need to initiate a scan. This process checks all document libraries, folders, and files for overly permissive sharing.</p>
+            
+            <div class="info-box">
+                <strong>Note:</strong> Scans run in your browser. For very large sites (>15,000 files), we recommend contacting your administrator for server-side scanning options.
+            </div>
+
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 2: SCAN PROGRESS -->
+                <img src="img/02-scan-progress.png" alt="Scan Progress" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Scan in Progress<br>
+                    (Capture the spinner or progress bar during a scan)
+                </div>
+                <span class="screenshot-caption">The monitor analyzing site permissions in real-time.</span>
+            </div>
+        </section>
+
+        <section id="understanding-results">
+            <h2>Understanding Results</h2>
+            <p>Once the scan is complete, you will receive a <strong>Risk Score</strong> from 0 to 100.</p>
+            <h3>Risk Factors</h3>
+            <ul>
+                <li><strong>Everyone / All Users:</strong> Items shared with the entire organization or external "Everyone" groups.</li>
+                <li><strong>Anonymous Links:</strong> Public links that anyone on the internet can access.</li>
+                <li><strong>Organization Links:</strong> Links shared with anyone inside your company.</li>
+                <li><strong>External Users:</strong> Files shared with people outside your organization.</li>
+                <li><strong>Unique Permissions:</strong> Items that don't inherit permissions from their parent folder (often a sign of manual, loose sharing).</li>
+            </ul>
+        </section>
+
+        <section id="heatmap">
+            <h2>Folder Heatmap</h2>
+            <p>Visualizing where the risks are concentrated is key to efficient remediation. The <strong>Exposure Heatmap</strong> shows which folders contain the most risky items.</p>
+            
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 4: HEATMAP -->
+                <img src="img/04-heatmap.png" alt="Folder Heatmap" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Folder Heatmap<br>
+                    (Capture the visual heatmap section showing folders with risk intensity)
+                </div>
+                <span class="screenshot-caption">Visual heatmap identifying high-risk folders.</span>
+            </div>
+            <p>Click on any folder in the heatmap to filter the risk list and focus on that specific area of your site.</p>
+        </section>
+
+        <section id="remediation">
+            <h2>Remediating Risks</h2>
+            <p>The "Risky Items" tab lists every file or folder that contributed to your score. You can take immediate action on each item.</p>
+            
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 3: RISK LIST -->
+                <img src="img/03-risk-list.png" alt="Risk List" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Risk List Table<br>
+                    (Capture the table showing files with high risk scores)
+                </div>
+                <span class="screenshot-caption">List of identified risks with action buttons.</span>
+            </div>
+
+            <h3>Available Actions</h3>
+            <ul>
+                <li><strong>Remediate:</strong> Removes the specific "Everyone" or "Org-wide" access from the item.</li>
+                <li><strong>Restore Inheritance:</strong> Deletes unique permissions and makes the item inherit from its parent (the safest option).</li>
+                <li><strong>Acknowledge:</strong> If the risk is intentional (e.g., a public policy file), you can "Acknowledge" it with a note to exclude it from future scores.</li>
+            </ul>
+
+            <h3>Deep Dive: Item Details</h3>
+            <p>Clicking on any file name in the list opens the <strong>Remediation Panel</strong>. This sidebar provides deep security insights and specific reasons why the item was flagged.</p>
+            
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 09: REMEDIATION PANEL -->
+                <img src="img/09-remediation-panel.png" alt="Item Detail Panel" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Item Detail Panel<br>
+                    (Capture the full side panel that opens when you click a file name)
+                </div>
+                <span class="screenshot-caption">Detailed view of a specific risk with AI impact analysis.</span>
+            </div>
+
+            <p>The panel includes a specialized <strong>Security & AI Impact</strong> section that explains how Microsoft 365 Copilot might surface this specific file if left unaddressed.</p>
+
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 10: AI IMPACT -->
+                <img src="img/10-ai-impact.png" alt="AI Impact Insight" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Security & AI Impact Insight<br>
+                    (Capture a close-up of the colored insight box inside the side panel)
+                </div>
+                <span class="screenshot-caption">Specific context on why this item is a risk for Copilot.</span>
+            </div>
+
+            <h3>Step-by-Step Remediation</h3>
+            <p>Fixing a risk is a simple process, whether you do it item-by-item or in bulk:</p>
+            <ol style="margin-left: 20px; margin-bottom: 1.5rem;">
+                <li>Identify a file in the <strong>Risky Items</strong> list and click its action button (e.g., <em>Remediate</em>).</li>
+                <li>Alternatively, use <strong>Clean All Critical Risks</strong> to fix multiple items at once.</li>
+                <li>A confirmation dialog will appear explaining exactly what will happen. Click <strong>Confirm</strong>.</li>
+            </ol>
+
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 07: REMEDIATION DIALOG -->
+                <img src="img/07-remediation-dialog.png" alt="Remediation Dialog" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Remediation Confirmation Dialog<br>
+                    (Capture the pop-up dialog that appears when you click "Remediate" or "Clean All")
+                </div>
+                <span class="screenshot-caption">Step 1: Confirming the permission change.</span>
+            </div>
+
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 08: SUCCESS MESSAGE -->
+                <img src="img/08-success-message.png" alt="Success Message" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Success Message / Cleanup Complete<br>
+                    (Capture the green success message bar that appears after a successful Bulk Cleanup)
+                </div>
+                <span class="screenshot-caption">Step 2: Confirmation of successful remediation.</span>
+            </div>
+        </section>
+
+        <section id="audit-logs">
+            <h2>Audit Logs</h2>
+            <p>All remediation actions taken through the monitor are recorded in the <strong>Remediation Logs</strong> tab. This allows you to track who changed what and when.</p>
+            
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 6: AUDIT LOGS -->
+                <img src="img/06-audit-logs.png" alt="Audit Logs" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Remediation Logs<br>
+                    (Capture the logs tab showing a history of actions taken)
+                </div>
+                <span class="screenshot-caption">Traceability of all permission changes made via the tool.</span>
+            </div>
+        </section>
+
+        <section id="subscription">
+            <h2>Subscription & Trial</h2>
+            <p>dForts offers a <strong>30-day free trial</strong> with full feature access. No credit card is required to start.</p>
+            
+            <div class="screenshot-container">
+                <!-- SCREENSHOT 5: TRIAL BANNER -->
+                <img src="img/05-trial-banner.png" alt="Trial Banner" class="screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <div class="placeholder-box" style="display:none">
+                    <strong>SCREENSHOT NEEDED:</strong> Trial Active Banner<br>
+                    (Capture the yellow warning bar showing "Trial Active — 30 days remaining")
+                </div>
+                <span class="screenshot-caption">Monitor your trial status directly from the web part.</span>
+            </div>
+
+            <p>To start your trial or purchase a plan, visit the Azure Portal link provided in the app:</p>
+            <p><a href="https://portal.azure.com/#create/dforts.dforts-copilot-readiness-monitor/preview" target="_blank" style="color: var(--primary-color); font-weight: 600;">Get 30-day Free Trial →</a></p>
+        </section>
+    </main>
+
+    <script>
+        // Simple scroll spy and smooth scroll
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                window.scrollTo({
+                    top: target.offsetTop,
+                    behavior: 'smooth'
+                });
+                
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            let fromTop = window.scrollY + 100;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                let section = document.querySelector(link.getAttribute('href'));
+                if (
+                    section.offsetTop <= fromTop &&
+                    section.offsetTop + section.offsetHeight > fromTop
+                ) {
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -53,7 +53,7 @@ public class TenantEntitlementService : ITenantEntitlementService
             }
 
             var daysElapsed = (int)(DateTime.UtcNow - trial.StartDateUtc).TotalDays;
-            var trialDaysLeft = Math.Max(0, 15 - daysElapsed);
+            var trialDaysLeft = Math.Max(0, 30 - daysElapsed);
 
             if (trialDaysLeft > 0)
             {
@@ -61,7 +61,7 @@ public class TenantEntitlementService : ITenantEntitlementService
                 {
                     Status = "active_trial",
                     TrialDaysLeft = trialDaysLeft,
-                    Message = $"Your 15-day trial is currently active. {trialDaysLeft} days remaining."
+                    Message = $"Your 30-day trial is currently active. {trialDaysLeft} days remaining."
                 };
             }
             else
@@ -70,7 +70,7 @@ public class TenantEntitlementService : ITenantEntitlementService
                 {
                     Status = "expired_trial",
                     TrialDaysLeft = 0,
-                    Message = "Your 15-day trial has expired. Please purchase a standard or premium subscription to continue using to the app."
+                    Message = "Your 30-day trial has expired. Please purchase a standard or premium subscription to continue using to the app."
                 };
             }
         }
