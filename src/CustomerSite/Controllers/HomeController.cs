@@ -202,6 +202,15 @@ public class HomeController : BaseController
     }
 
     /// <summary>
+    /// Support page.
+    /// </summary>
+    /// <returns>Support view.</returns>
+    public IActionResult Support()
+    {
+        return this.View();
+    }
+
+    /// <summary>
     /// Get All Subscription List for Current Logged in User.
     /// </summary>
     /// <param name="token">The MS Token<see cref="string" />..</param>
